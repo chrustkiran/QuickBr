@@ -22,7 +22,9 @@ export default class ItemCardList extends Component {
     const env = environment;
     const bucket = ReceiptData.bucket;
    const itemId = this.props.name;
-    const disabled_val = ((itemId in bucket && bucket[itemId] == 0 ) || !(itemId in bucket));
+   const category = this.props.category;
+    const disabled_val = ((category in bucket && itemId in bucket[category] && bucket[category][itemId] == 0 ) 
+    || !(category in bucket)  || (category in bucket && !(itemId in bucket[category])));
     return (
         <List>
           <ListItem avatar >
@@ -43,7 +45,7 @@ export default class ItemCardList extends Component {
               <Button onPress={()=>{this.addItem(this.props.name)}} small primary style={{borderRadius:50,width:40,height:40, backgroundColor: env['dark'].maincolor}}>
               <Text style={{textAlign:'center',width: 20,height: 20}}>+</Text>
               </Button>
-              <Text note style = {{width: 60,heigt: 50, textAlign:'center',justifyContent:'center',marginTop:10}} >Qty {itemId in bucket? bucket[itemId] : 0}</Text>
+              <Text note style = {{width: 60,heigt: 50, textAlign:'center',justifyContent:'center',marginTop:10}} >Qty {(category in bucket && itemId in bucket[category])? bucket[category][itemId] : 0}</Text>
               <Button disabled={disabled_val} onPress={()=>{this.removeItem(this.props.name)}} small primary style={{borderRadius:50, width:40, height:40, backgroundColor: env['dark'].maincolor}} >
                  <Text style={{textAlign:'center',width:20,height: 20}}>-</Text>
               </Button>

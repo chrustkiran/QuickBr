@@ -1,6 +1,6 @@
 export default ReceiptData =  {
 
-    bucketEmpty : true,
+    bucketTotalCount : 0,
     bucket : {
     
     }
