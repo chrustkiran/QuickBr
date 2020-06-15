@@ -3,45 +3,25 @@ import { Right, Left, Thumbnail, Body, Header, Content, List, ListItem, Text, Se
 import {Button} from 'native-base';
 import ReceiptData from '../common/ReceiptData';
 import environment from '../../environment';
+import {db} from '../config/FirebaseConfig';
+
 export default class ItemCardList extends Component {
 
-  state = {
-    addorremoveBtnChange: 0
-  }
 
   addItem = (itemId) => {
-    const bucket = ReceiptData.bucket;
-    if('item'+itemId in bucket){
-    bucket['item'+itemId] += 1;
-    } else {
-      bucket['item'+itemId] = 1;
-    }
-    ReceiptData.bucketEmpty = false
-    this.setState({addorremoveBtnChange: this.state.addorremoveBtnChange + 1})
+    this.props.addItem(itemId);
   }
 
   removeItem = (itemId) => {
-    const bucket = ReceiptData.bucket;
-    bucket['item'+itemId] -= 1;
-    this.setState({addorremoveBtnChange: this.state.addorremoveBtnChange + 1})
-   // this.checkBucketEmpty()
+   this.props.removeItem(itemId);
   }
 
 
-  checkBucketEmpty = () =>{
-    var empty = true
-    Object.keys(ReceiptData.bucket).forEach(item =>{
-      if (item != 0){
-          empty = false
-      }
-    });
-    empty ? ReceiptData.bucketEmpty = true : ReceiptData.bucket  = false;
-  }
 
   render() {
     const env = environment;
     const bucket = ReceiptData.bucket;
-   const itemId = 'item'+this.props.id;
+   const itemId = this.props.name;
     const disabled_val = ((itemId in bucket && bucket[itemId] == 0 ) || !(itemId in bucket));
     return (
         <List>
@@ -60,11 +40,11 @@ export default class ItemCardList extends Component {
     justifyContent : 'center'
    }
   } >
-              <Button onPress={()=>{this.addItem(this.props.id)}} small primary style={{borderRadius:50,width:40,height:40, backgroundColor: env['dark'].maincolor}}>
+              <Button onPress={()=>{this.addItem(this.props.name)}} small primary style={{borderRadius:50,width:40,height:40, backgroundColor: env['dark'].maincolor}}>
               <Text style={{textAlign:'center',width: 20,height: 20}}>+</Text>
               </Button>
               <Text note style = {{width: 60,heigt: 50, textAlign:'center',justifyContent:'center',marginTop:10}} >Qty {itemId in bucket? bucket[itemId] : 0}</Text>
-              <Button disabled={disabled_val} onPress={()=>{this.removeItem(this.props.id)}} small primary style={{borderRadius:50, width:40, height:40, backgroundColor: env['dark'].maincolor}} >
+              <Button disabled={disabled_val} onPress={()=>{this.removeItem(this.props.name)}} small primary style={{borderRadius:50, width:40, height:40, backgroundColor: env['dark'].maincolor}} >
                  <Text style={{textAlign:'center',width:20,height: 20}}>-</Text>
               </Button>
               </View>
