@@ -1,6 +1,6 @@
 import Firebase from 'firebase';
 const firebaseConfig = {
-  apiKey: "AIzaSyC6kbPIJAot_eztn9m9ErW5J_ixWXQB9ts",
+  apiKey: "",
   authDomain: "etrinco-77984.firebaseapp.com",
   databaseURL: "https://etrinco-77984.firebaseio.com",
   projectId: "etrinco-77984",
