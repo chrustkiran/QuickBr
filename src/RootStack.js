@@ -13,6 +13,7 @@ import ItemScreen from "./screens/ItemScreen";
 import MainScreen from './screens/MainScreen';
 import Bucketscreen from './screens/Bucketscreen';
 import RegisterScreen from "./screens/RegisterScreen";
+import {auth} from "./config/FirebaseConfig";
 
 export default class RootStack extends React.Component {
     state = {isShowAddress: false}
@@ -20,6 +21,10 @@ export default class RootStack extends React.Component {
     showAddress = (value) => {
         this.setState({isShowAddress: value});
 
+    }
+
+    logout = (navigator) => {
+        auth.signOut();
     }
 
     render() {
@@ -52,12 +57,16 @@ export default class RootStack extends React.Component {
                     <Stack.Screen name="Category" component={MainScreen} options={{headerShown: true,
                       headerLeft: () => (
                         <Ionicons onPress={() => this.showAddress(true)} style={{marginLeft: 10}}
-                                  name="ios-navigate" size={28} color="white"/>)
+                                  name="ios-navigate" size={28} color="white"/>),
+                        headerRight: () => (
+                            <Ionicons onPress={() => {this.logout(navigator)}} style={{marginRight : 10}} name="ios-person" size={28} color="white"/>
+                        ),
+                        gestureEnabled: false
                     }} />
                     <Stack.Screen name="Home" component={HomeScreen} options={{
                         headerLeft: () => (
                             <Ionicons onPress={() => this.showAddress(true)} style={{marginLeft: 10}}
-                                      name="ios-navigate" size={28} color="white"/>)
+                                      name="ios-navigate" size={28} color="white"/>),
                     }}
                     />
 
