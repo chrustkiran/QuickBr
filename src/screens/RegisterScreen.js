@@ -1,33 +1,61 @@
-// import React from 'react';
-// import { Button } from 'native-base';
-// import { NavigationContainer } from '@react-navigation/native';
-// import { createStackNavigator } from '@react-navigation/stack';
-// import { View, Text } from 'react-native'
-// import { Container, Header, Content, Form, Item, Input } from 'native-base';
+import React from 'react';
+import {Button, Container, Content, Form, Header, Input, Item, Body, Title} from 'native-base';
+import {Text} from 'react-native'
+import environment from "../../environment";
 
 
-// export default class RegisterScreen extends React.Component{
+export default class RegisterScreen extends React.Component {
 
-//     goToHome = ({navigation}) =>{
-//     //navigation.navigate('Home');
-//     }
+    goToHome = ({navigation}) => {
+        //navigation.navigate('Home');
+    }
 
-//     render(){
-//         return(
-//             <Container>
-//         <Header />
-//         <Content>
-//           <Form>
-//             <Item>
-//               <Input placeholder="Username" />
-//             </Item>
-//             <Item last>
-//               <Input placeholder="Password" />
-//             </Item>
-//           </Form>
-//         </Content>
-//       </Container>
-            
-//         );
-//     }
-// }
+    render() {
+        return (
+            <Container>
+                <Header>
+                    <Body>
+                        <Title>Register your account</Title>
+                    </Body>
+                </Header>
+                <Content>
+                    <Form style={{padding: '1%'}}>
+                        <Item>
+                            <Input style={{width: '70%'}} placeholderTextColor='black' placeholder="Display name"/>
+                        </Item>
+                        <Item>
+                            <Input style={{width: '70%'}} placeholderTextColor='black' placeholder="Phone number"/>
+                        </Item>
+                        <Item>
+                            <Input style={{width: '70%'}} placeholderTextColor='black' placeholder="Username"/>
+                        </Item>
+                        <Item>
+                            <Input secureTextEntry={true} style={{width: '70%'}} placeholderTextColor='black' placeholder="Password"/>
+                        </Item>
+                        <Item>
+                            <Input secureTextEntry={true} style={{width: '70%'}} placeholderTextColor='black' placeholder="Re-Enter Password"/>
+                        </Item>
+                        <Item style={{marginTop: '5%'}}>
+                            <Button style={{
+                                width: '100%',
+                                justifyContent: 'center',
+                                backgroundColor: environment.dark.maincolor
+                            }}>
+                                <Text style={{color: '#ffffff'}}> Register </Text>
+                            </Button>
+                        </Item>
+                        <Item style={{marginTop: '3%'}}>
+                        <Button style={{backgroundColor: environment.white, width: '95%', textAlign: 'center', justifyContent: 'center'}}
+                                onPress={() => navigation.navigate('Register')}>
+                            <Text>
+                                Already have an account?
+                            </Text>
+                        </Button>
+                        </Item>
+                    </Form>
+                </Content>
+            </Container>
+
+        );
+    }
+}

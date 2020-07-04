@@ -12,6 +12,7 @@ import AddressModal from './components/AddressModal';
 import ItemScreen from "./screens/ItemScreen";
 import MainScreen from './screens/MainScreen';
 import Bucketscreen from './screens/Bucketscreen';
+import RegisterScreen from "./screens/RegisterScreen";
 
 export default class RootStack extends React.Component {
     state = {isShowAddress: false}
@@ -25,8 +26,6 @@ export default class RootStack extends React.Component {
 
 
         const Stack = createStackNavigator();
-
-        console.log('calling rootstack')
 
         return (
             <NavigationContainer>
@@ -47,7 +46,8 @@ export default class RootStack extends React.Component {
                         }
                     }}
                 >
-                      {/* <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}} /> */}
+                      <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
+                      <Stack.Screen name="Register" component = {RegisterScreen} options={{headerShown: false}} />
                     {/* <Stack.Screen name="Login" component={LoginScreen}/> */}
                     <Stack.Screen name="Category" component={MainScreen} options={{headerShown: true,
                       headerLeft: () => (
