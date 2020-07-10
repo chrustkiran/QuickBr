@@ -1,13 +1,10 @@
 import * as React from 'react';
-import {View, Text} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from './screens/Homescreen';
 import environment from '../environment';
-import {Ionicons, Entypo} from '@expo/vector-icons';
+import {Ionicons, Entypo, FontAwesome } from '@expo/vector-icons';
 import LoginScreen from './screens/LoginScreen';
-import Modal from 'react-native-modal';
-import {Button} from 'native-base';
 import AddressModal from './components/AddressModal';
 import ItemScreen from "./screens/ItemScreen";
 import MainScreen from './screens/MainScreen';
@@ -56,8 +53,7 @@ export default class RootStack extends React.Component {
                     {/* <Stack.Screen name="Login" component={LoginScreen}/> */}
                     <Stack.Screen name="Category" component={MainScreen} options={{headerShown: true,
                       headerLeft: () => (
-                        <Ionicons onPress={() => this.showAddress(true)} style={{marginLeft: 10}}
-                                  name="ios-navigate" size={28} color="white"/>),
+                          <FontAwesome name="inbox" size={24} color="white" style={{marginLeft: 10}} />),
                         headerRight: () => (
                             <Ionicons onPress={() => {this.logout(navigator)}} style={{marginRight : 10}} name="ios-person" size={28} color="white"/>
                         ),
@@ -65,9 +61,8 @@ export default class RootStack extends React.Component {
                     }} />
                     <Stack.Screen name="Home" component={HomeScreen} options={{
                         headerLeft: () => (
-                            <Ionicons onPress={() => this.showAddress(true)} style={{marginLeft: 10}}
-                                      name="ios-navigate" size={28} color="white"/>),
-                    }}
+                            <FontAwesome name="inbox" size={24} color="white" style={{marginLeft: 10}} />), }}
+
                     />
 
                     <Stack.Screen name="Item" component={ItemScreen} options={{headerShown: false}} />
@@ -86,3 +81,7 @@ export default class RootStack extends React.Component {
     }
 
 }
+
+
+{/* <Ionicons onPress={() => this.showAddress(true)} style={{marginLeft: 10}}
+                                      name="ios-navigate" size={28} color="white"/>*/}

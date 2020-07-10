@@ -50,6 +50,7 @@ export default class RegisterScreen extends React.Component {
     }
 
     render() {
+        const navigation = this.props.navigation;
         return (
             <Root>
                 <Container>
@@ -99,6 +100,7 @@ export default class RegisterScreen extends React.Component {
                                     textAlign: 'center',
                                     justifyContent: 'center'
                                 }}
+                                        onPress={() => {navigation.navigate('Login')}}
                                 >
                                     <Text>
                                         Already have an account?

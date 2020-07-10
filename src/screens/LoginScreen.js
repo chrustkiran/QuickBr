@@ -2,6 +2,7 @@ import {Button, Container, Content, Form, Input, Item, Root, Spinner, Toast} fro
 import {Text} from 'react-native'
 import environment from '../../environment';
 import {auth} from "../config/FirebaseConfig";
+import React, {Component} from 'react';
 
 export default class LoginScreen extends React.Component {
 
@@ -59,8 +60,12 @@ export default class LoginScreen extends React.Component {
     }
 
     componentDidMount() {
-        console.log('component mounting...')
         auth.onAuthStateChanged(this.checkAlreadyLoggedIn); //this will listen continuously, its logging out by this
+    }
+
+    clearFormValues = () => {
+        this.setState({email : ''});
+        this.setState({password : ''})
     }
 
     render() {
