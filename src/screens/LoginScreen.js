@@ -11,7 +11,8 @@ export default class LoginScreen extends React.Component {
         email: '',
         password: '',
         isAlreadyLoggedIn: false,
-        isLoggedInChecked: false
+        isLoggedInChecked: false,
+        loginClicked: false
     };
 
 
@@ -21,11 +22,13 @@ export default class LoginScreen extends React.Component {
     };
 
     login = () => {
+        this.setState({loginClicked : true})
         auth.signInWithEmailAndPassword(this.state.email, this.state.password)
             .then(() => {
                 this.goToHome()
             })
             .catch((error) => {
+                this.setState({loginClicked : false})
                 this.showErrorToast(error.message)
             })
     };
@@ -50,10 +53,11 @@ export default class LoginScreen extends React.Component {
     checkAlreadyLoggedIn = (user) => {
         const navigation = this.props.navigation;
         if (user != null) {
-            this.setState({isAlreadyLoggedIn: true})
+            this.setState({isAlreadyLoggedIn: true});
             navigation.navigate('Category');
         } else {
-            this.setState({isAlreadyLoggedIn: false})
+            this.setState({isAlreadyLoggedIn: false});
+            this.clearFormValues();
             navigation.navigate('Login')
         }
         this.setState({isLoggedInChecked: true})
@@ -66,16 +70,18 @@ export default class LoginScreen extends React.Component {
     clearFormValues = () => {
         this.setState({email : ''});
         this.setState({password : ''})
+        this.setState({loginClicked : false})
     }
 
     render() {
         const navigation = this.props.navigation;
         const isAlreadyLoggedIn = this.state.isAlreadyLoggedIn
         const isLoggedInChecked = this.state.isLoggedInChecked
+        const loginClicked = this.state.loginClicked
         //entire component should be within Root to avoid error for Toast
         return (
             <Root>
-                {(isLoggedInChecked && !isAlreadyLoggedIn) ?
+                {(isLoggedInChecked && !isAlreadyLoggedIn && !loginClicked) ?
                     <Container style={{backgroundColor: '#ffffff'}}>
                         <Content style={{height: '100%', backgroundColor: environment.white}}>
                             <Form style={{height: '100%', marginTop: '60%', padding: '5%'}}>

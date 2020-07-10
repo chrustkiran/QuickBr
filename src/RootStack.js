@@ -11,6 +11,7 @@ import MainScreen from './screens/MainScreen';
 import Bucketscreen from './screens/Bucketscreen';
 import RegisterScreen from "./screens/RegisterScreen";
 import {auth} from "./config/FirebaseConfig";
+import {ActionSheet} from "native-base";
 
 export default class RootStack extends React.Component {
     state = {isShowAddress: false}
@@ -20,8 +21,38 @@ export default class RootStack extends React.Component {
 
     }
 
-    logout = (navigator) => {
+
+
+    logout = () => {
         auth.signOut();
+    }
+
+    showUserActions = () => {
+        const BUTTONS = [
+            { text: "Change Address" },
+            { text: "Logout" },
+            { text: "Cancel"}
+        ];
+        const DESTRUCTIVE_INDEX = 1;
+        const CANCEL_INDEX = 2;
+
+            ActionSheet.show(
+                {
+                    options: BUTTONS,
+                    cancelButtonIndex: CANCEL_INDEX,
+                    destructiveButtonIndex: DESTRUCTIVE_INDEX,
+                    title: 'Choose Options'
+                },
+                buttonIndex => {
+                    this.handleUserAction(buttonIndex);
+                }
+            )
+    }
+
+    handleUserAction = (btnIndex) => {
+        if (btnIndex == 1) {
+            this.logout();
+        }
     }
 
     render() {
@@ -55,7 +86,7 @@ export default class RootStack extends React.Component {
                       headerLeft: () => (
                           <FontAwesome name="inbox" size={24} color="white" style={{marginLeft: 10}} />),
                         headerRight: () => (
-                            <Ionicons onPress={() => {this.logout(navigator)}} style={{marginRight : 10}} name="ios-person" size={28} color="white"/>
+                            <Ionicons onPress={() => {this.showUserActions()}} style={{marginRight : 10}} name="ios-person" size={28} color="white"/>
                         ),
                         gestureEnabled: false
                     }} />

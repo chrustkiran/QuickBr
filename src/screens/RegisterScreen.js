@@ -49,6 +49,12 @@ export default class RegisterScreen extends React.Component {
         this.setState(object)
     }
 
+    componentDidMount() {
+        this.props.navigation.addListener('focus', () => {
+            console.log('Navigated to Resgister')
+        });
+    }
+
     render() {
         const navigation = this.props.navigation;
         return (
