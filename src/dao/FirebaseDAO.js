@@ -1,7 +1,7 @@
 import ReceiptData from "../common/ReceiptData";
 import {auth, db} from "../config/FirebaseConfig";
 
-const authId = auth.currentUser.uid;
+const authId = auth.currentUser !== null ? auth.currentUser.uid : '';
 export const FirebaseDAO = {
     saveBucket: () => {
         const bucket = ReceiptData.bucket;
