@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import { Right, Left, Thumbnail, Body, Button, Header, Content, List, ListItem, Text, Separator, View } from 'native-base';
+import { Right, Left, Thumbnail, Body, Button, List, ListItem, Text, View } from 'native-base';
 import ReceiptData from '../common/ReceiptData';
 import environment from '../../environment';
 
 export default class ItemCardList extends Component {
 
 
-  addItem = (itemId) => {
-    this.props.addItem(itemId);
+  addItem = (itemId, adjustableBy) => {
+    this.props.addItem(itemId, adjustableBy);
   }
 
-  removeItem = (itemId) => {
-   this.props.removeItem(itemId);
+  removeItem = (itemId, adjustableBy) => {
+   this.props.removeItem(itemId, adjustableBy);
   }
 
 
@@ -19,10 +19,17 @@ export default class ItemCardList extends Component {
   render() {
     const env = environment;
     const bucket = ReceiptData.bucket;
-   const itemId = this.props.name;
-   const category = this.props.category;
+    const itemId = this.props.name;
+    const category = this.props.category;
+    const measure = this.props.measure;
+    const adjustableBy = this.props.adjustableBy;
+
+    const isUnit = measure === 'unit' ? true : false;
+
     const disabled_val = ((category in bucket && itemId in bucket[category] && bucket[category][itemId] == 0 ) 
     || !(category in bucket)  || (category in bucket && !(itemId in bucket[category])));
+
+
     return (
         <List>
           <ListItem avatar >
@@ -40,11 +47,11 @@ export default class ItemCardList extends Component {
     justifyContent : 'center'
    }
   } >
-              <Button rounded onPress={()=>{this.addItem(this.props.name)}} small primary style={{ backgroundColor: env['dark'].maincolor}}>
+              <Button rounded onPress={()=>{this.addItem(this.props.name, adjustableBy)}} small primary style={{ backgroundColor: env['dark'].maincolor}}>
               <Text >+</Text>
               </Button>
-              <Text note style = {{width: 60,heigt: 50, textAlign:'center',justifyContent:'center',marginTop:10}} >Qty {(category in bucket && itemId in bucket[category])? bucket[category][itemId] : 0}</Text>
-              <Button rounded disabled={disabled_val} onPress={()=>{this.removeItem(this.props.name)}} small primary style={{ backgroundColor: env['dark'].maincolor}} >
+              <Text note style = {{width: 60,heigt: 50, textAlign:'center',justifyContent:'center',marginTop:10}} >{(category in bucket && itemId in bucket[category])? bucket[category][itemId] : 0} {!isUnit ? measure : ''}</Text>
+              <Button rounded disabled={disabled_val} onPress={()=>{this.removeItem(this.props.name, adjustableBy)}} small primary style={{ backgroundColor: env['dark'].maincolor}} >
                  <Text>-</Text>
               </Button>
               </View>

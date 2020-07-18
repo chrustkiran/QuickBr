@@ -1,8 +1,9 @@
 import React from 'react';
 import ReceiptData from '../common/ReceiptData';
-import {View, Image, Text, StyleSheet} from 'react-native';
-
-import { Container, Header, Content } from 'native-base';
+import {View, Text, StyleSheet} from 'react-native';
+import { Button, Root, Toast} from 'native-base';
+import environment from "../../environment";
+import {OrderLogic} from "../service/OrderLogic";
 
 
 
@@ -10,9 +11,31 @@ import { Container, Header, Content } from 'native-base';
 
 export default class Bucketscreen extends React.Component {
 
+     styles = StyleSheet.create({
+        footer: {
+            marginStart: '10%',
+            width: '80%',
+            position: 'absolute',
+            marginTop: '145%'
+        }});
+
+     makeOrder = () => {
+         OrderLogic.makeAnOrder().then(results => {
+             if(results) {
+                Toast.show({
+                    text: 'Order is sent successfully!',
+                    style: {backgroundColor: environment.dark.maincolor, justifyContent: 'center'},
+                    position: "center",
+                    type: "danger"
+                 });
+             }
+         });
+     };
+
     render(){
         const bucket = ReceiptData.bucket;
         return(
+            <Root>
         <View style={{marginTop : 5}}>
             <Text style={{textAlign: 'center', fontSize: 22}}>
                 Your order summary
@@ -41,9 +64,15 @@ export default class Bucketscreen extends React.Component {
           
                
            })}
+
+           <View style={this.styles.footer}>
+               <Button rounded onPress={()=> this.makeOrder()} style={{ backgroundColor: environment['dark'].maincolor, justifyContent: 'center'}}>
+                   <Text style={{color: environment.white}}>Make an Order</Text>
+               </Button>
+           </View>
        
         </View>
-            
+            </Root>
         );
     }
 

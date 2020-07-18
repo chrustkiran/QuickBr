@@ -1,15 +1,16 @@
 import React from 'react';
-import {Button, Container, Content, Form, Input, Item, Root, Spinner, Toast} from 'native-base';
+import {Button, Container, Content, Form, Input, Item} from 'native-base';
+import Text from "react-native-web/dist/exports/Text";
 
 export default class Bucketscreen extends React.Component {
 
     state = {
         confirmationCode : ''
-    }
+    };
 
     bindConfimationCode = (confirmationInput) =>{
         this.setState({confirmationCode : confirmationInput})
-    }
+    };
 
 
 
@@ -22,10 +23,18 @@ export default class Bucketscreen extends React.Component {
                                onChangeText={() => {this.bindConfimationCode(this)}}/>
                     </Item>
                     <Item>
-                        <Button onPress={} title={'Ok'}/>
+                        <Button>
+                            <Text>
+                                Ok
+                            </Text>
+                        </Button>
                     </Item>
                     <Item>
-                        <Button onPress={} title={'Resend'}/>
+                        <Button>
+                            <Text>
+                                Resend
+                            </Text>
+                        </Button>
                     </Item>
                 </Form>
             </Content>

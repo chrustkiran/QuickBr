@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, BackHandler} from 'react-native';
 import {Container} from 'native-base';
 import Cards from '../components/Cards';
 import Search from '../components/Search';
@@ -30,6 +30,39 @@ export default class HomeScreen extends React.Component {
             logo: "https://www.tailorbrands.com/wp-content/uploads/2020/01/beer-city-logo.png",
         }
     ]
+
+    constructor(props) {
+        super(props)
+    }
+
+    componentDidMount() {
+        BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    componentWillUnmount() {
+        BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+    }
+
+    handleBackButtonClick = () => {
+        this.props.navigation.goBack(null);
+        return true;
+    };
+
+    /*
+        () {
+            BackHandler.addEventListener('hardwareBackPress', this.handleBackButtonClick);
+        }
+
+        componentWillUnmount() {
+            BackHandler.removeEventListener('hardwareBackPress', this.handleBackButtonClick);
+        }
+
+        handleBackButtonClick = () => {
+            this.props.navigation.goBack(null);
+            return true;
+        };
+    */
+
 
 
     render() {
