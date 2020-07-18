@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Right, Left, Thumbnail, Body, Header, Content, List, ListItem, Text, Separator, View } from 'native-base';
-import {Button} from 'native-base';
+import { Right, Left, Thumbnail, Body, Button, Header, Content, List, ListItem, Text, Separator, View } from 'native-base';
 import ReceiptData from '../common/ReceiptData';
 import environment from '../../environment';
-import {db} from '../config/FirebaseConfig';
 
 export default class ItemCardList extends Component {
 
@@ -42,12 +40,12 @@ export default class ItemCardList extends Component {
     justifyContent : 'center'
    }
   } >
-              <Button onPress={()=>{this.addItem(this.props.name)}} small primary style={{borderRadius:50,width:40,height:40, backgroundColor: env['dark'].maincolor}}>
-              <Text style={{textAlign:'center',width: 20,height: 20}}>+</Text>
+              <Button rounded onPress={()=>{this.addItem(this.props.name)}} small primary style={{ backgroundColor: env['dark'].maincolor}}>
+              <Text >+</Text>
               </Button>
               <Text note style = {{width: 60,heigt: 50, textAlign:'center',justifyContent:'center',marginTop:10}} >Qty {(category in bucket && itemId in bucket[category])? bucket[category][itemId] : 0}</Text>
-              <Button disabled={disabled_val} onPress={()=>{this.removeItem(this.props.name)}} small primary style={{borderRadius:50, width:40, height:40, backgroundColor: env['dark'].maincolor}} >
-                 <Text style={{textAlign:'center',width:20,height: 20}}>-</Text>
+              <Button rounded disabled={disabled_val} onPress={()=>{this.removeItem(this.props.name)}} small primary style={{ backgroundColor: env['dark'].maincolor}} >
+                 <Text>-</Text>
               </Button>
               </View>
             </Right> 
@@ -56,3 +54,15 @@ export default class ItemCardList extends Component {
     );
   }
 }
+
+
+
+
+/*
+
+
++ => borderRadius:50,width:40,height:40,
+text => style={{textAlign:'center',width: 20,height: 20}}
+-  => borderRadius:50, width:40, height:40,
+text => style={{textAlign:'center',width:20,height: 20}}
+ */

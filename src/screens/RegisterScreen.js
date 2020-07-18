@@ -1,5 +1,5 @@
 import React from 'react';
-import {Body, Button, Container, Content, Form, Header, Input, Item, Root, Title, Toast} from 'native-base';
+import {Body, Button, Container, Content, Form, Header, Input, Item, Root, Spinner, Title, Toast} from 'native-base';
 import {Text} from 'react-native'
 import environment from "../../environment";
 import {auth} from "../config/FirebaseConfig"
@@ -10,25 +10,28 @@ export default class RegisterScreen extends React.Component {
         email: '',
         password: '',
         displayname: '',
-        phonenumber: ''
+        phonenumber: '',
+        isRegisterClicked: false
     }
 
     register = () => {
+        this.setState({isRegisterClicked: true});
         auth
             .createUserWithEmailAndPassword(this.state.email.trim(), this.state.password)
             .then(() => {
                 const user = auth.currentUser;
                 user.updateProfile({displayName: this.state.displayname})
                     .then(() => {
-                        //this.props.navigation.navigate('Category');
-                        if (user && !user.emailVerified) {
+                        this.props.navigation.navigate('Category');
+                      /*  if (user && !user.emailVerified) {
                             user.sendEmailVerification().then(
                                 console.log("email verification sent to user"));
                             console.log(user);
-                        }
+                        }*/
                     })
             })
             .catch(error => {
+                this.setState({isRegisterClicked: false});
                 console.error(error.message)
                 this.showErrorToast(error.message);
             })
@@ -49,73 +52,87 @@ export default class RegisterScreen extends React.Component {
         this.setState(object)
     }
 
+    setDefault = () => {
+        this.setState({isRegisterClicked: false});
+    }
+
     componentDidMount() {
         this.props.navigation.addListener('focus', () => {
-            console.log('Navigated to Resgister')
+            this.setDefault();
         });
     }
 
     render() {
         const navigation = this.props.navigation;
+        const isRegisterClicked = this.state.isRegisterClicked;
         return (
             <Root>
-                <Container>
-                    <Header>
-                        <Body>
-                            <Title>Register your account</Title>
-                        </Body>
-                    </Header>
-                    <Content>
-                        <Form styleignInWithEmailAndPassword={{padding: '1%'}}>
-                            <Item>
-                                <Input style={{width: '70%'}} placeholderTextColor='black' placeholder="Display name"
-                                       onChangeText={this.bindFormInputs.bind(this, 'displayname')}/>
-                            </Item>
-                            <Item>
-                                <Input style={{width: '70%'}} placeholderTextColor='black' placeholder="Phone number"
-                                       onChangeText={this.bindFormInputs.bind(this, 'phonenumber')}/>
-                            </Item>
-                            <Item>
-                                <Input style={{width: '70%'}} placeholderTextColor='black' placeholder="Email"
-                                       onChangeText={this.bindFormInputs.bind(this, 'email')}/>
-                            </Item>
-                            <Item>
-                                <Input secureTextEntry={true} style={{width: '70%'}} placeholderTextColor='black'
-                                       placeholder="Password"
-                                       onChangeText={this.bindFormInputs.bind(this, 'password')}/>
-                            </Item>
-                            <Item>
-                                <Input secureTextEntry={true} style={{width: '70%'}} placeholderTextColor='black'
-                                       placeholder="Re-Enter Password"/>
-                            </Item>
-                            <Item style={{marginTop: '5%'}}>
-                                <Button style={{
-                                    width: '100%',
-                                    justifyContent: 'center',
-                                    backgroundColor: environment.dark.maincolor
-                                }} onPress={() => {
-                                    this.register()
-                                }}>
-                                    <Text style={{color: '#ffffff'}}> Register </Text>
-                                </Button>
-                            </Item>
-                            <Item style={{marginTop: '3%'}}>
-                                <Button style={{
-                                    backgroundColor: environment.white,
-                                    width: '95%',
-                                    textAlign: 'center',
-                                    justifyContent: 'center'
-                                }}
-                                        onPress={() => {navigation.navigate('Login')}}
-                                >
-                                    <Text>
-                                        Already have an account?
-                                    </Text>
-                                </Button>
-                            </Item>
-                        </Form>
-                    </Content>
-                </Container>
+                {(!isRegisterClicked ?
+                    <Container>
+                        <Header>
+                            <Body>
+                                <Title>Register your account</Title>
+                            </Body>
+                        </Header>
+                        <Content>
+                            <Form styleignInWithEmailAndPassword={{padding: '1%'}}>
+                                <Item>
+                                    <Input style={{width: '70%'}} placeholderTextColor='black'
+                                           placeholder="Display name"
+                                           onChangeText={this.bindFormInputs.bind(this, 'displayname')}/>
+                                </Item>
+                                <Item>
+                                    <Input style={{width: '70%'}} placeholderTextColor='black'
+                                           placeholder="Phone number"
+                                           onChangeText={this.bindFormInputs.bind(this, 'phonenumber')}/>
+                                </Item>
+                                <Item>
+                                    <Input style={{width: '70%'}} placeholderTextColor='black' placeholder="Email"
+                                           onChangeText={this.bindFormInputs.bind(this, 'email')}/>
+                                </Item>
+                                <Item>
+                                    <Input secureTextEntry={true} style={{width: '70%'}} placeholderTextColor='black'
+                                           placeholder="Password"
+                                           onChangeText={this.bindFormInputs.bind(this, 'password')}/>
+                                </Item>
+                                <Item>
+                                    <Input secureTextEntry={true} style={{width: '70%'}} placeholderTextColor='black'
+                                           placeholder="Re-Enter Password"/>
+                                </Item>
+                                <Item style={{marginTop: '5%'}}>
+                                    <Button style={{
+                                        width: '100%',
+                                        justifyContent: 'center',
+                                        backgroundColor: environment.dark.maincolor
+                                    }} onPress={() => {
+                                        this.register()
+                                    }}>
+                                        <Text style={{color: '#ffffff'}}> Register </Text>
+                                    </Button>
+                                </Item>
+                                <Item style={{marginTop: '3%'}}>
+                                    <Button style={{
+                                        backgroundColor: environment.white,
+                                        width: '95%',
+                                        textAlign: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                            onPress={() => {
+                                                navigation.navigate('Login')
+                                            }}
+                                    >
+                                        <Text>
+                                            Already have an account?
+                                        </Text>
+                                    </Button>
+                                </Item>
+                            </Form>
+                        </Content>
+                    </Container> :
+                    <Container style={{justifyContent: 'center'}}>
+                        <Spinner color='green'/>
+                    </Container>)}
+
             </Root>
 
         );

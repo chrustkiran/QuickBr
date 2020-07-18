@@ -85,9 +85,6 @@ export default class LoginScreen extends React.Component {
                     <Container style={{backgroundColor: '#ffffff'}}>
                         <Content style={{height: '100%', backgroundColor: environment.white}}>
                             <Form style={{height: '100%', marginTop: '60%', padding: '5%'}}>
-                                <Text>
-                                    {isLoggedInChecked} {isAlreadyLoggedIn}
-                                </Text>
                                 <Item>
                                     <Input style={{width: '70%'}} placeholderTextColor='black' placeholder="Email"
                                            onChangeText={this.bindEmail.bind(this)}/>
