@@ -140,9 +140,9 @@ export default class ItemScreen extends React.Component {
     }
 
 
-    addItem = (itemId, adjustableBy) => {
+    addItem = (itemId, adjustableBy, price, measure) => {
         const category = this.props.route.params.category;
-        ItemLogic.addItem(itemId, adjustableBy, category);
+        ItemLogic.addItem(itemId, adjustableBy, category, price, measure);
         this.setState({addorremoveBtnChange: this.state.addorremoveBtnChange + 1})
 
     }

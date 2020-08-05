@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import { Right, Left, Thumbnail, Body, Button, List, ListItem, Text, View } from 'native-base';
+import React, {Component} from 'react';
+import {Body, Button, Left, List, ListItem, Right, Text, Thumbnail, View} from 'native-base';
 import ReceiptData from '../common/ReceiptData';
 import environment from '../../environment';
 
 export default class ItemCardList extends Component {
 
-
-  addItem = (itemId, adjustableBy) => {
-    this.props.addItem(itemId, adjustableBy);
+  addItem = (itemId, adjustableBy, price, measure) => {
+    this.props.addItem(itemId, adjustableBy, price, measure);
   }
 
   removeItem = (itemId, adjustableBy) => {
@@ -17,16 +16,19 @@ export default class ItemCardList extends Component {
 
 
   render() {
-    const env = environment;
-    const bucket = ReceiptData.bucket;
-    const itemId = this.props.name;
-    const category = this.props.category;
-    const measure = this.props.measure;
-    const adjustableBy = this.props.adjustableBy;
+      const COUNT = 'count';
+      const UNIT = 'unit';
+      const env = environment;
+      const bucket = ReceiptData.bucket;
+      const itemId = this.props.name;
+      const category = this.props.category;
+      const measure = this.props.measure;
+      const price = this.props.price;
+      const adjustableBy = this.props.adjustableBy;
 
-    const isUnit = measure === 'unit' ? true : false;
+    const isUnit = measure === UNIT ? true : false;
 
-    const disabled_val = ((category in bucket && itemId in bucket[category] && bucket[category][itemId] == 0 ) 
+    const disabled_val = ((category in bucket && itemId in bucket[category] && bucket[category][itemId][COUNT] == 0 )
     || !(category in bucket)  || (category in bucket && !(itemId in bucket[category])));
 
 
@@ -47,10 +49,10 @@ export default class ItemCardList extends Component {
     justifyContent : 'center'
    }
   } >
-              <Button rounded onPress={()=>{this.addItem(this.props.name, adjustableBy)}} small primary style={{ backgroundColor: env['dark'].maincolor}}>
+              <Button rounded onPress={()=>{this.addItem(this.props.name, adjustableBy, price, measure)}} small primary style={{ backgroundColor: env['dark'].maincolor}}>
               <Text >+</Text>
               </Button>
-              <Text note style = {{width: 60,heigt: 50, textAlign:'center',justifyContent:'center',marginTop:10}} >{(category in bucket && itemId in bucket[category])? bucket[category][itemId] : 0} {!isUnit ? measure : ''}</Text>
+              <Text note style = {{width: 60,heigt: 50, textAlign:'center',justifyContent:'center',marginTop:10}} >{(category in bucket && itemId in bucket[category])? bucket[category][itemId][COUNT] : 0} {!isUnit ? measure : ''}</Text>
               <Button rounded disabled={disabled_val} onPress={()=>{this.removeItem(this.props.name, adjustableBy)}} small primary style={{ backgroundColor: env['dark'].maincolor}} >
                  <Text>-</Text>
               </Button>

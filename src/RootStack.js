@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import HomeScreen from './screens/Homescreen';
 import environment from '../environment';
 import {Ionicons, Entypo, FontAwesome } from '@expo/vector-icons';
@@ -11,7 +11,8 @@ import MainScreen from './screens/MainScreen';
 import Bucketscreen from './screens/Bucketscreen';
 import RegisterScreen from "./screens/RegisterScreen";
 import {auth} from "./config/FirebaseConfig";
-import {ActionSheet} from "native-base";
+import {ActionSheet, Root} from "native-base";
+import AddressScreen from "./screens/AddressScreen";
 
 export default class RootStack extends React.Component {
     state = {isShowAddress: false}
@@ -27,7 +28,7 @@ export default class RootStack extends React.Component {
         auth.signOut();
     }
 
-    showUserActions = () => {
+    showUserActions = (navigation) => {
         const BUTTONS = [
             { text: "Change Address" },
             { text: "Logout" },
@@ -44,14 +45,16 @@ export default class RootStack extends React.Component {
                     title: 'Choose Options'
                 },
                 buttonIndex => {
-                    this.handleUserAction(buttonIndex);
+                    this.handleUserAction(buttonIndex, navigation);
                 }
             )
     }
 
-    handleUserAction = (btnIndex) => {
+    handleUserAction = (btnIndex, navigation) => {
         if (btnIndex == 1) {
             this.logout();
+        } else if (btnIndex == 0) {
+            navigation.navigate('Address');
         }
     }
 
@@ -61,6 +64,7 @@ export default class RootStack extends React.Component {
         const Stack = createStackNavigator();
 
         return (
+            <Root>
             <NavigationContainer>
                 <AddressModal show={this.state.isShowAddress}></AddressModal>
               
@@ -82,14 +86,15 @@ export default class RootStack extends React.Component {
                       <Stack.Screen name="Login" component={LoginScreen} options={{headerShown: false}} />
                       <Stack.Screen name="Register" component = {RegisterScreen} options={{headerShown: false}} />
                     {/* <Stack.Screen name="Login" component={LoginScreen}/> */}
-                    <Stack.Screen name="Category" component={MainScreen} options={{headerShown: true,
+                    <Stack.Screen name="Category" component={MainScreen} options={({navigation}) => ({
+                        headerShown: true,
                       headerLeft: () => (
                           <FontAwesome name="inbox" size={24} color="white" style={{marginLeft: 10}} />),
                         headerRight: () => (
-                            <Ionicons onPress={() => {this.showUserActions()}} style={{marginRight : 10}} name="ios-person" size={28} color="white"/>
+                            <Ionicons onPress={() => {this.showUserActions(navigation)}} style={{marginRight : 10}} name="ios-person" size={28} color="white"/>
                         ),
                         gestureEnabled: false
-                    }} />
+                    })} />
                     <Stack.Screen name="Home" component={HomeScreen} options={{
                         headerLeft: () => (
                             <FontAwesome name="inbox" size={24} color="white" style={{marginLeft: 10}} />), }}
@@ -98,13 +103,13 @@ export default class RootStack extends React.Component {
 
                     <Stack.Screen name="Item" component={ItemScreen} options={{headerShown: false}} />
                     <Stack.Screen name="Bucket" component={Bucketscreen} options={{
-                        headerBackImage: () => (
-                            <Ionicons style={{marginLeft: 10}}
-                                      name="ios-arrow-back" size={24} color="white"/>)
+                        headerLeft: (props) => (<HeaderBackButton tintColor={environment.white} label={props.label} />)
                     }} />
+                    <Stack.Screen name="Address" component={AddressScreen} options={{title: 'Delivery Address',
+                    headerLeft: (props) => (<HeaderBackButton tintColor={environment.white} label={props.label} />)}} />
                 </Stack.Navigator>
             </NavigationContainer>
-
+            </Root>
 
         );
 
